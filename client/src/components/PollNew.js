@@ -8,10 +8,12 @@ class PollNewForm extends Component {
   //   this.props.clearErrorAction();
   // }
   submitForm(poll) {
-    this.props.createPoll(poll);
+    const pollWithUser = {...poll, userEmail: this.props.userEmail}
+    console.log(pollWithUser);
+    this.props.createPoll(pollWithUser);
   }
 
-  /*renderError(){
+  renderError(){
     if(this.props.errorMessage){
       return (
         <div className="alert alert-danger">
@@ -19,7 +21,7 @@ class PollNewForm extends Component {
         </div>
       )
     }
-  }*/
+  }
 
   renderField(field){
     const { input, type, placeholder, meta: {touched, error}} = field;
@@ -31,15 +33,25 @@ class PollNewForm extends Component {
     )
   }
 
+  renderTextarea(field){
+    const { input, placeholder, meta: {touched, error}} = field;
+    return (
+      <div className="form-group">
+        <textarea className="form-control" placeholder={placeholder} {...input} />
+        { touched && error && <div className="error">{error}</div>}
+      </div>
+    )
+  }
+
   render() {
     const { handleSubmit, submitting, pristine, reset } = this.props;
     return (
       <div>
-        <h3>Sign In</h3>
+        <h3>New Poll</h3>
         <form onSubmit={handleSubmit(this.submitForm.bind(this))}>
-          <Field name="email" type="email" component={this.renderField} placeholder="Email"/>
-          <Field name="password" type="password" component={this.renderField} placeholder="Password"/>
-          { this.renderError() }
+          <Field name="name" type="text" component={this.renderField} placeholder="Question"/>
+          <Field name="options" component={this.renderTextarea} placeholder="Option 1, Option 2, ..."/>
+          {this.renderError()}
           <button className="btn btn-primary" disabled={submitting} type="submit">Submit</button>
           <button className="btn btn-link" disabled={pristine || submitting} type="button" onClick={reset}>Reset</button>
         </form>
@@ -50,17 +62,21 @@ class PollNewForm extends Component {
 
 function validate(values){
   const errors = {};
-  if(!values.email)
-    errors.email = 'Email is required';
-  if(!values.password)
-    errors.password = 'Password is required';  
+  if(!values.name)
+    errors.name = 'Question is required';
+  if(!values.options)
+    errors.options = 'Options are required';  
   return errors;
 }
 
 const PollNew = reduxForm({
-  form: 'signin',
+  form: 'pollNew',
   validate
 })(PollNewForm);
 
+const mapStateToProps = (state) => {
+  console.log(state);
+  return {errorMessage: state.polls.error, userEmail: state.auth.userEmail }
+}
 
-export default connect((state)=>({errorMessage: state.auth.error}), {clearErrorAction, loginUser})(SignIn);
+export default connect(mapStateToProps, {createPoll})(PollNew);

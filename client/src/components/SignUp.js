@@ -61,7 +61,7 @@ function validate(values){
 }
 
 const SignUp = reduxForm({
-  form: 'signin',
+  form: 'signUp',
   validate
 })(SignUpForm);
 

@@ -7,7 +7,7 @@ class Home extends Component {
     this.props.fetchPolls();
   }
   renderList(){
-    this.props.polls.map((poll)=>(
+    this.props.polls.polls.map((poll)=>(
       <li key={poll._id}><a href={poll.link}>{poll.name}</a></li>
     ))
   }

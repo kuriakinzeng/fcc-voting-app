@@ -4,11 +4,13 @@ import App from './components/App';
 import Home from './components/Home';
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
+import PollNew from './components/PollNew';
 
 export default (
     <Route path="/" component={App}>
         <IndexRoute component={Home} />
         <Route path="signin" component={SignIn} />
         <Route path="signup" component={SignUp} />
+        <Route path="create" component={PollNew} />
     </Route>
 )

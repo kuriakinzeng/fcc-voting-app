@@ -21,5 +21,5 @@ module.exports = function (app) {
     app.post('/signup', Authentication.signup);
 
     app.get('/polls', Polls.index);
-    app.post('/polls/new', Polls.create);
+    app.post('/polls/create', Polls.create);
 }

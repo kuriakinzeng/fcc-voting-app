@@ -6,9 +6,11 @@ import {
   AUTH_ERROR,
   CLEAR_ERROR,
   FETCH_POLLS_SUCCESS,
-  FETCH_POLLS_FAILURE
+  FETCH_POLLS_FAILURE,
+  CREATE_POLL_SUCCESS,
+  CREATE_POLL_FAILURE
 } from './types';
-import { saveToken, removeToken } from '../helpers/localStorage';
+import { saveToken, removeToken, getToken } from '../helpers/localStorage';
 import { browserHistory } from 'react-router';
 
 const ROOT_URL = process.env.ROOT_URL || 'http://localhost:3090';
@@ -19,12 +21,14 @@ export const authErrorAction = createAction(AUTH_ERROR);
 export const clearErrorAction = createAction(CLEAR_ERROR);
 export const fetchPollsSuccess = createAction(FETCH_POLLS_SUCCESS);
 export const fetchPollsFailure = createAction(FETCH_POLLS_FAILURE);
+export const createPollSuccess = createAction(CREATE_POLL_SUCCESS);
+export const createPollFailure = createAction(CREATE_POLL_FAILURE);
 
 export function loginUser(creds) {
   return function (dispatch) { // thunk
     axios.post(`${ROOT_URL}/signin`, creds)
       .then((response) => {
-        dispatch(loginUserAction());
+        dispatch(loginUserAction(response.data.email));
         if (!saveToken(response.data.token)) {
           alert('Token is not saved. Please enable browser cache.');
         }
@@ -51,7 +55,7 @@ export function signUpUser(creds) {
   return function (dispatch) { 
     axios.post(`${ROOT_URL}/signup`, creds)
       .then((response) => {
-        dispatch(loginUserAction());
+        dispatch(loginUserAction(response.data.email));
         if (!saveToken(response.data.token)) {
           alert('Token is not saved. Please enable browser cache.');
         }
@@ -72,5 +76,19 @@ export function fetchPolls() {
       .catch((error) => {
         dispatch(fetchPollsFailure(error.message));
       })
+  }
+}
+
+export function createPoll(poll) {
+  return function(dispatch) {
+    axios.post(`${ROOT_URL}/polls/create`,{ 
+      headers: { authorization: getToken() },
+      data: poll
+    }).then((response) => {
+      dispatch(createPollSuccess(response.data.poll))
+    })
+    .catch((error)=> {
+      dispatch(createPollFailure(error.message))
+    })
   }
 }
