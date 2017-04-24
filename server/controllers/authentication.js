@@ -11,9 +11,10 @@ function tokenForUser(user){
 }
 
 exports.signin = function(req, res, next) {
-    // Users have verified their email and password
+    // Users have verified their email and password via passport middleware
     // We just have to provide the token
-    res.send({ email: req.user.email, token: tokenForUser(req.user) });
+    req.user.password = undefined;
+    res.send({ user: req.user, token: tokenForUser(req.user) });
 }
 
 exports.signup = function(req,res,next){
@@ -34,10 +35,10 @@ exports.signup = function(req,res,next){
             password: password
         })
 
-        user.save((err)=>{
+        user.save((err, userCreated)=>{
             if(err) return next(err);
-            // Q: How does token work across session?
-            return res.json({ email: req.user.email, token: tokenForUser(user) })
+            console.log(userCreated);
+            return res.json({ user: userCreated, token: tokenForUser(user) })
         })
     })
 }

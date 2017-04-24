@@ -8,9 +8,12 @@ class Header extends Component {
         if (this.props.authenticated) {
             return [
                 <li className="nav-item" key={1}>
-                    <Link className="nav-link" to="/create">New Poll</Link>
+                    <Link className="nav-link" to="/mypolls">My Polls</Link>
                 </li>,
                 <li className="nav-item" key={2}>
+                    <Link className="nav-link" to="/create">New Poll</Link>
+                </li>,
+                <li className="nav-item" key={3}>
                     <Link className="nav-link" to="" onClick={()=>this.props.logoutUser()}>Sign Out</Link>
                 </li>
             ];

@@ -1,5 +1,6 @@
 const Authentication = require('./controllers/authentication')
 const Polls = require('./controllers/polls')
+const Options = require('./controllers/options')
 const passportService = require('./services/passport')
 const passport = require('passport')
 
@@ -20,6 +21,9 @@ module.exports = function (app) {
     // allows post to signup given creds & return token
     app.post('/signup', Authentication.signup);
 
-    app.get('/polls', Polls.index);
-    app.post('/polls/create', Polls.create);
+    app.get('/polls', Polls.getAllPolls);
+    app.put('/polls', Polls.updateVoters);
+    app.delete('/polls', Polls.deletePoll);
+    app.post('/polls/create', Polls.createPoll);
+    app.get('/polls/:id', Polls.getPollById);
 }

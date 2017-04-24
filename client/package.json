@@ -3,9 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "async": "^2.3.0",
     "axios": "^0.16.1",
     "bootstrap": "^4.0.0-alpha.6",
+    "chart.js": "^1.1.1",
     "react": "^15.5.4",
+    "react-chartjs": "^0.8.0",
     "react-dom": "^15.5.4",
     "react-redux": "^5.0.4",
     "react-router": "^2.8.1",
@@ -13,6 +16,7 @@
     "redux-actions": "^2.0.2",
     "redux-form": "^6.6.3",
     "redux-logger": "^3.0.1",
+    "redux-persist": "^4.6.0",
     "redux-thunk": "^2.2.0"
   },
   "devDependencies": {

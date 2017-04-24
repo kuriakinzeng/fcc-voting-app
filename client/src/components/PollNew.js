@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import { reduxForm, Field } from 'redux-form';
 import { connect } from 'react-redux';
-import { createPoll } from '../actions/';
+import { createPoll, clearErrorAction } from '../actions/';
 
 class PollNewForm extends Component {
-  // componentWillUnmount(){
-  //   this.props.clearErrorAction();
-  // }
+  componentWillUnmount(){
+    this.props.clearErrorAction();
+  }
+
   submitForm(poll) {
-    const pollWithUser = {...poll, userEmail: this.props.userEmail}
+    const pollWithUser = {...poll, user: this.props.user}
     console.log(pollWithUser);
     this.props.createPoll(pollWithUser);
   }
@@ -75,8 +76,7 @@ const PollNew = reduxForm({
 })(PollNewForm);
 
 const mapStateToProps = (state) => {
-  console.log(state);
-  return {errorMessage: state.polls.error, userEmail: state.auth.userEmail }
+  return {errorMessage: state.polls.error, user: state.auth.user }
 }
 
-export default connect(mapStateToProps, {createPoll})(PollNew);
+export default connect(mapStateToProps, {createPoll, clearErrorAction})(PollNew);

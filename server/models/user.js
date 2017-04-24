@@ -5,7 +5,7 @@
  // Define our schema
  const userSchema = new Schema({
      email: { type: String, unique: true, lowercase: true },
-     password:  String,
+     password:  String
  });
 
 // this.password is the hashed password, with this refers to user model 

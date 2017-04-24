@@ -1,21 +1,25 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchPolls } from '../actions';
+import { Link } from 'react-router';
 
 class Home extends Component {
   componentDidMount(){
     this.props.fetchPolls();
   }
   renderList(){
-    this.props.polls.polls.map((poll)=>(
-      <li key={poll._id}><a href={poll.link}>{poll.name}</a></li>
+    return this.props.polls.polls.map((poll)=>(
+      <li key={poll._id}><Link to={poll._id}>{poll.name}</Link></li>
     ))
   }
   render() {
     return (
-      <ul>
-        {this.renderList()}
-      </ul>
+      <div className="polls">
+        <h3>All Polls:</h3>
+        <ul>
+          {this.renderList()}
+        </ul>
+      </div>
     );
   }
 }
