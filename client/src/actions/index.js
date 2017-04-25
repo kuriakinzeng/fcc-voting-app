@@ -20,7 +20,7 @@ import {
 import { saveToken, removeToken, getToken } from '../helpers/localStorage';
 import { browserHistory } from 'react-router';
 
-const ROOT_URL = process.env.ROOT_URL || 'http://localhost:3090';
+const ROOT_URL = process.env.REACT_APP_SERVER_URL || 'http://localhost:3090';
 
 export const loginUserAction = createAction(LOGIN_USER);
 export const reauthUserAction = createAction(REAUTH_USER);
@@ -86,7 +86,6 @@ export function fetchPolls() {
   return function (dispatch) { 
     axios.get(`${ROOT_URL}/polls`)
       .then((response) => {
-        console.log(response);
         dispatch(fetchPollsSuccess(response.data));
       })
       .catch((error) => {

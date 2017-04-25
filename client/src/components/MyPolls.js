@@ -9,8 +9,6 @@ class MyPolls extends Component {
     const myPolls = polls.filter((poll)=>{
       return poll._creator == user._id
     });
-    
-    console.log(polls, myPolls);
 
     return (
       <div className="polls">

@@ -15,12 +15,6 @@ app.use(bodyParser.json({ type: '*/*' }));
 app.enable('trust proxy');
 router(app);
 
-// app.use(function(err, req, res, next) {
-//   console.log('error');
-//   res.status(500);
-//   res.render('error', { error: err });
-// });
-
 const port = process.env.PORT || 3090;
 const server = http.createServer(app);
 server.listen(port);
