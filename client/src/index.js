@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { Router, browserHistory } from 'react-router';
 import { Provider } from 'react-redux';
@@ -19,6 +19,7 @@ let middleware = [thunk];
 if (process.env.NODE_ENV !== 'production') {
   middleware.push(createLogger())
 }
+// console.log(process.env.NODE_ENV);
 
 const store = createStore(
   reducers,
@@ -27,18 +28,38 @@ const store = createStore(
     autoRehydrate()
   )
 );
-persistStore(store);
 
 const token = getToken();
 if(token){
   store.dispatch(reauthUserAction());
 }
 
+export default class AppProvider extends Component {
+  constructor(props){
+    super(props);
+    this.state = { rehydrated: false };
+  }
+  componentWillMount(){
+    persistStore(store, {}, () => {
+      this.setState({ rehydrated: true })
+    });
+  }
+
+  render() {
+    if(!this.state.rehydrated){
+      return <div>Loading...</div>
+    }
+    return (
+      <Provider store={store}>
+        <Router history={browserHistory}>
+          {routes}
+        </Router>
+      </Provider>
+    )
+  }
+}
+
 ReactDOM.render(
-  <Provider store={store}>
-    <Router history={browserHistory}>
-      {routes}
-    </Router>
-  </Provider>,
+  <AppProvider />,
   document.getElementById('root')
 );

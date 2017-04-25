@@ -57,8 +57,8 @@ exports.createPoll = function(req, res, next) {
 
           Option.find({_poll:ObjectId(pollFound._id)},function(err, optionsFound){
             if(err) return next(err);
-            pollFound.options = optionsFound;
-            return res.json(pollFound)
+            pollFound["options"] = optionsFound;
+            return res.status(200).json(pollFound);
           })
         })
       })

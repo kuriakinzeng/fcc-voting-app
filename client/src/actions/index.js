@@ -21,6 +21,7 @@ import { saveToken, removeToken, getToken } from '../helpers/localStorage';
 import { browserHistory } from 'react-router';
 
 const ROOT_URL = process.env.REACT_APP_SERVER_URL || 'http://localhost:3090';
+// console.log(process.env.REACT_APP_SERVER_URL);
 
 export const loginUserAction = createAction(LOGIN_USER);
 export const reauthUserAction = createAction(REAUTH_USER);
@@ -101,7 +102,9 @@ export function createPoll(poll) {
       data: poll
     }).then((response) => {
       dispatch(createPollSuccess(response.data));
-      browserHistory.push(`/${response.data._id}`);
+      // browserHistory.push(`/${response.data._id}`);
+      // make it easier, hehehe
+      browserHistory.push('/');
     })
     .catch((error)=> {
       dispatch(createPollFailure(error.message))
@@ -114,8 +117,12 @@ export function fetchPoll(pollId) {
     const polls = getState().polls.polls;
     const activePoll = polls.find((poll)=>{
       return poll._id === pollId
-    })
-    dispatch(fetchPollSuccess(activePoll));
+    });
+    if(!activePoll){
+      dispatch(fetchPollFailure("Poll doesn't exist"));
+    } else {
+      dispatch(fetchPollSuccess(activePoll));
+    }
   }
   // return function (dispatch) { 
   //   axios.get(`${ROOT_URL}/polls/${pollId}`)

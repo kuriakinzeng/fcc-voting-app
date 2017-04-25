@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, IndexRoute } from 'react-router';
+import { Route, Redirect, IndexRedirect } from 'react-router';
 import App from './components/App';
 import Home from './components/Home';
 import SignIn from './components/SignIn';
@@ -11,11 +11,13 @@ import RequireAuth from './components/RequireAuth';
 
 export default (
     <Route path="/" component={App}>
-        <IndexRoute component={Home} />
+        <IndexRedirect to="/polls" />
         <Route path="signin" component={SignIn} />
         <Route path="signup" component={SignUp} />
         <Route path="create" component={RequireAuth(PollNew)} />
         <Route path="mypolls" component={RequireAuth(MyPolls)} />
-        <Route path=":pollId" component={Poll} />
+        <Route path="polls" component={Home} />
+        <Route path="polls/:pollId" component={Poll} />
+        <Redirect from='*' to='/polls' />
     </Route>
 )

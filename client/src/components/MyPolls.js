@@ -7,7 +7,7 @@ class MyPolls extends Component {
   render() {
     const { user, polls } = this.props;
     const myPolls = polls.filter((poll)=>{
-      return poll._creator == user._id
+      return poll._creator === user._id
     });
 
     return (
@@ -17,7 +17,7 @@ class MyPolls extends Component {
           {
             myPolls.map(
               (poll)=>(<li key={poll._id}>
-                  <Link to={poll._id}>{poll.name}</Link>
+                  <Link to={`polls/${poll._id}`}>{poll.name}</Link>
                 </li>)
             )
           }

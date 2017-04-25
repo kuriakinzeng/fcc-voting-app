@@ -79,10 +79,21 @@ class Poll extends Component {
       </div>
     )
   }
+
+  renderError(){
+    return (
+      <div className="row">
+        <h3>
+      { this.props.errorMessage? this.props.errorMessage : 'Loading...' }
+        </h3>
+      </div>
+    )
+  }
+
   render() {
     return (
       <div>
-        {this.props.activePoll ? this.renderPoll() : 'Loading...'}
+        {this.props.activePoll ? this.renderPoll() : this.renderError()}
       </div>
     )
   }
@@ -93,7 +104,8 @@ function mapStateToProps(state) {
     polls: state.polls.polls,
     activePoll: state.polls.activePoll,
     authenticated: state.auth.authenticated,
-    user: state.auth.user
+    user: state.auth.user,
+    errorMessage: state.polls.error
   }
 }
 
