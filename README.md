@@ -67,7 +67,11 @@ Using Command Line
 ## Future Work
 
 TODO:
-1. Loading animation during fetch
+1. ~~Add token when requesting to create or delete polls~~
+2. Loading animation during fetch
+
+Known issues:
+1. Create Poll requests works on localhost but not when deployed to S3 
 
 ## Credits
 
