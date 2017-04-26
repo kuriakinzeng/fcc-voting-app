@@ -21,6 +21,7 @@ import { saveToken, removeToken, getToken } from '../helpers/localStorage';
 import { browserHistory } from 'react-router';
 
 const ROOT_URL = process.env.REACT_APP_SERVER_URL || 'http://localhost:3090';
+// const ROOT_URL = 'http://localhost:3090';
 // console.log(process.env.REACT_APP_SERVER_URL);
 
 export const loginUserAction = createAction(LOGIN_USER);
@@ -97,10 +98,10 @@ export function fetchPolls() {
 
 export function createPoll(poll) {
   return function(dispatch) {
-    axios.post(`${ROOT_URL}/polls/create`,{ 
-      headers: { authorization: getToken() },
-      data: poll
-    }).then((response) => {
+    // consistent way for declaring headers
+    const config = { headers: { authorization: getToken() } };
+    axios.post(`${ROOT_URL}/polls/create`,poll,config)
+    .then((response) => {
       dispatch(createPollSuccess(response.data));
       // browserHistory.push(`/${response.data._id}`);
       // make it easier, hehehe
@@ -124,15 +125,6 @@ export function fetchPoll(pollId) {
       dispatch(fetchPollSuccess(activePoll));
     }
   }
-  // return function (dispatch) { 
-  //   axios.get(`${ROOT_URL}/polls/${pollId}`)
-  //     .then((response) => {
-  //       dispatch(fetchPollSuccess(response.data));
-  //     })
-  //     .catch((error) => {
-  //       dispatch(fetchPollFailure(error.message));
-  //     })
-  // }
 }
 
 export function updateVoters(vote) {
@@ -149,6 +141,7 @@ export function updateVoters(vote) {
 
 export function deletePoll(poll) {
   return function(dispatch){
+    // declaring header for post and delete methods are different.. weird shit
     axios.delete(`${ROOT_URL}/polls`,{ 
       headers: { authorization: getToken() },
       data: poll

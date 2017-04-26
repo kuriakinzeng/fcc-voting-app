@@ -9,9 +9,10 @@ class PollNewForm extends Component {
   }
 
   submitForm(poll) {
-    const pollWithUser = {...poll, user: this.props.user}
-    console.log(pollWithUser);
-    this.props.createPoll(pollWithUser);
+    // const pollWithUser = {...poll, user: this.props.user}
+    // console.log(pollWithUser);
+    // this.props.createPoll(pollWithUser);
+    this.props.createPoll(poll);
   }
 
   renderError(){
