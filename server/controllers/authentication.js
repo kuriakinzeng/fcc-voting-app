@@ -13,6 +13,7 @@ function tokenForUser(user){
 exports.signin = function(req, res, next) {
     // Users have verified their email and password via passport middleware
     // We just have to provide the token
+    // console.log('user signin:',req.user);
     req.user.password = undefined;
     res.send({ user: req.user, token: tokenForUser(req.user) });
 }
@@ -37,7 +38,7 @@ exports.signup = function(req,res,next){
 
         user.save((err, userCreated)=>{
             if(err) return next(err);
-            console.log(userCreated);
+            // console.log(userCreated);
             return res.json({ user: userCreated, token: tokenForUser(user) })
         })
     })

@@ -33,33 +33,33 @@ exports.getAllPolls = function(req, res, next) {
 };
 
 exports.createPoll = function(req, res, next) {
-  const { user, name, options } = req.body.data;
-  
-  let optionsArray = options.split(",");
+  // console.log('createPoll');
+  // console.log("sent by user", req.body);
+  // console.log("obtained after user sends token:",req.user);
 
-  User.findById(user._id, function(err,user){
+  // if user passes token verification, we verify the integrity of req.user 
+  const { name, options } = req.body;
+
+  const pollModel = new Poll({_creator:ObjectId(req.user._id), name});
+  pollModel.save((err, poll) => {
     if(err) return next(err);
-    pollModel = new Poll({_creator:ObjectId(user.id), name});
-    pollModel.save((err, poll) => {
+    const optionsArray = options.split(",").map(function(name){
+      return {
+        _poll: ObjectId(poll.id),
+        name: name,
+        votes: 0,
+      }
+    });
+    Option.collection.insertMany(optionsArray,function(err,optionsInserted){
       if(err) return next(err);
-      optionsArray = optionsArray.map(function(name){
-        return {
-          _poll: ObjectId(poll.id),
-          name: name,
-          votes: 0,
-        }
-      });
-      Option.collection.insertMany(optionsArray,function(err,optionsInserted){
+
+      Poll.findById(poll.id,function(err,pollFound){
         if(err) return next(err);
 
-        Poll.findById(poll.id,function(err,pollFound){
+        Option.find({_poll:ObjectId(pollFound._id)},function(err, optionsFound){
           if(err) return next(err);
-
-          Option.find({_poll:ObjectId(pollFound._id)},function(err, optionsFound){
-            if(err) return next(err);
-            pollFound["options"] = optionsFound;
-            return res.status(200).json(pollFound);
-          })
+          pollFound["options"] = optionsFound;
+          return res.status(200).json(pollFound);
         })
       })
     })
@@ -128,8 +128,11 @@ exports.updateVoters = function(req, res, next) {
 }
 
 exports.deletePoll = function(req, res, next){
-  const { pollId, user } = req.body;
-  Poll.findByIdAndRemove(pollId,function(err, pollRemoved){
+  const { pollId } = req.body;
+  // check if req.user._id is the creator
+  Poll.findOneAndRemove({_id:pollId, _creator:req.user._id},
+  function(err, pollRemoved){
+    // console.log(err, pollRemoved);
     if(err) return next(err);
     res.status(200).send('Poll deleted');
   })

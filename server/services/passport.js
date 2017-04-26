@@ -14,6 +14,8 @@ const jwtOptions = {
     secretOrKey: process.env.JWT_SECRET
 }
 const jwtLogin = new JwtStrategy(jwtOptions, function (payload, done) {
+    // console.log('jwtLogin:',payload);
+    // extract the user and pass to the controller as req.user
     User.findById(payload.sub, function (err, user) {
         if (err) return done(err, false)
         if (user)
@@ -30,7 +32,8 @@ passport.use(jwtLogin);
 // local strategy for actual signing in
 const localOptions = { usernameField: 'email' };
 const localLogin = new LocalStrategy(localOptions, function(email, pwd, done){
-    // verify login
+    // console.log('local login', email, pwd)
+    // attempt login
     User.findOne({ email: email }, function(err, user){
         // check if user exists
         if(err) return done(err);
