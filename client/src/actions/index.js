@@ -22,7 +22,7 @@ import { browserHistory } from 'react-router';
 
 const ROOT_URL = process.env.REACT_APP_SERVER_URL || 'http://localhost:3090';
 // const ROOT_URL = 'http://localhost:3090';
-// console.log(process.env.REACT_APP_SERVER_URL);
+console.log(process.env.REACT_APP_SERVER_URL);
 
 export const loginUserAction = createAction(LOGIN_USER);
 export const reauthUserAction = createAction(REAUTH_USER);
