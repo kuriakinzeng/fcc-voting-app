@@ -71,7 +71,7 @@ TODO:
 2. Loading animation during fetch
 
 Known issues:
-1. Create Poll requests works on localhost but not when deployed to S3 
+1. ~~Create Poll requests works on localhost but not when deployed to S3 ~~
 
 ## Credits
 
