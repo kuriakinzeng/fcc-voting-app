@@ -41,9 +41,10 @@ option_settings:
     MONGO_URI: "mongodb://..."
     JWT_SECRET: "yourJwtSecret"
 ```
-
-6. Deploy the code: ```eb deploy```
-7. View your app: ```eb open```
+6. You have to stage ```.ebextensions``` folder but don't commit because you don't want it to be accidentally pushed to a public repository.
+7. Deploy the code: ```eb deploy --staged```
+8. View your app: ```eb open```
+9. Unstage the ```.ebextentions``` folder
 
 ### Client (S3 and CloudFront)
 #### Build
