@@ -33,8 +33,17 @@ option_settings:
   aws:elasticbeanstalk:container:nodejs:
     NodeCommand: "npm start"
 ```
-5. Deploy the code: ```eb deploy```
-6. View your app: ```eb open```
+5. Create a file called ```.ebextensions/env.config``` and transfer environment variables from ```.env``` to this file:
+```
+option_settings:
+  aws:elasticbeanstalk:application:environment:
+    NODE_ENV: "production"
+    MONGO_URI: "mongodb://..."
+    JWT_SECRET: "yourJwtSecret"
+```
+
+6. Deploy the code: ```eb deploy```
+7. View your app: ```eb open```
 
 ### Client (S3 and CloudFront)
 #### Build
